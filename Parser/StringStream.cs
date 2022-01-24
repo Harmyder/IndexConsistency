@@ -34,7 +34,14 @@ namespace Parser
 
         public string Peek(int length) => _text.Substring(_pos, length);
 
-        public void Skip(int delta) => _pos += delta;
+        public void Skip(int delta)
+        {
+            if (delta < 0)
+            {
+                throw new ArgumentException(nameof(delta));
+            }
+            _pos += delta;
+        }
 
         public int IndexOf(char target)
         {

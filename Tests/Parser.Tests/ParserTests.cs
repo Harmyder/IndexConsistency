@@ -85,7 +85,16 @@ namespace ParserTests
             Assert.AreEqual("text", entries[0]);
         }
 
-        public void CollectTopWitpageStyle()
+
+        [TestMethod]
+        public void CollectTopWithPageRange()
+        {
+            var entries = new Parser.Parser().CollectIndices("\\index{text|(}");
+            Assert.AreEqual(1, entries.Length);
+            Assert.AreEqual("text", entries[0]);
+        }
+
+        public void CollectTopWithPageStyle()
         {
             var entries = new Parser.Parser().CollectIndices("\\index{text|textit}");
             Assert.AreEqual(1, entries.Length);
@@ -105,6 +114,16 @@ namespace ParserTests
         public void CollectSubWithVisual()
         {
             var entries = new Parser.Parser().CollectIndices("\\index{text!subtext@sub-text}");
+            Assert.AreEqual(2, entries.Length);
+            Assert.AreEqual("text", entries[0]);
+            Assert.AreEqual("subtext", entries[1]);
+        }
+
+
+        [TestMethod]
+        public void CollectSubWithPageRange()
+        {
+            var entries = new Parser.Parser().CollectIndices("\\index{text!subtext|(}");
             Assert.AreEqual(2, entries.Length);
             Assert.AreEqual("text", entries[0]);
             Assert.AreEqual("subtext", entries[1]);

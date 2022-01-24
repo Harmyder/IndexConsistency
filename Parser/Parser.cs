@@ -25,7 +25,7 @@ namespace Parser
 
                     foreach (var see in level.See)
                     {
-                        wereAllAdded &= setInternal.Add(see);
+                        setInternal.Add(see);
                     }
 
                     foreach (var seeAlso in level.SeeAlso)
@@ -93,7 +93,7 @@ namespace Parser
             None,
             Level,
             See,
-            Seealso,
+            SeeAlso,
             PageNumStyle,
             Stop,
         }
@@ -147,48 +147,54 @@ namespace Parser
 
             while (state != State.Stop)
             {
-                var curr = stream.Get();
-
-                var isEscaped = false;
-                if (curr == Consts.IndexEscape)
-                {
-                    curr = stream.Get();
-                    isEscaped = true;
-                }
-
                 switch (state)
                 {
                     case State.Level:
-                        if (!isEscaped && curr == Consts.Level)
                         {
-                            levels.Add(CreateLevel(currentLevel, new string[] { }, new string[] { }));
-                            currentLevel = string.Empty;
-                        }
-                        else if (!isEscaped && curr == Consts.Subcommand)
-                        {
-                            if (IsFollowingCommand(stream, Consts.SeeCommand))
+                            var curr = stream.Get();
+
+                            var isEscaped = false;
+                            if (curr == Consts.IndexEscape)
                             {
-                                state = State.See;
-                                stream.Skip(Consts.SeeCommand.Length);
+                                curr = stream.Get();
+                                isEscaped = true;
                             }
-                            else if (IsFollowingCommand(stream, Consts.SeeAlsoCommand))
+
+                            if (!isEscaped && curr == Consts.Level)
                             {
-                                state = State.See;
-                                stream.Skip(Consts.SeeAlsoCommand.Length);
+                                levels.Add(CreateLevel(currentLevel, new string[] { }, new string[] { }));
+                                currentLevel = string.Empty;
+                            }
+                            else if (!isEscaped && curr == Consts.Subcommand)
+                            {
+                                if (stream.Peek() == Consts.PageRangeOpen || stream.Peek() == Consts.PageRangeClose)
+                                {
+                                    stream.Skip(1);
+                                }
+                                else if (IsFollowingCommand(stream, Consts.SeeCommand))
+                                {
+                                    state = State.See;
+                                    stream.Skip(Consts.SeeCommand.Length);
+                                }
+                                else if (IsFollowingCommand(stream, Consts.SeeAlsoCommand))
+                                {
+                                    state = State.SeeAlso;
+                                    stream.Skip(Consts.SeeAlsoCommand.Length);
+                                }
+                                else
+                                {
+                                    state = State.PageNumStyle;
+                                }
+                            }
+                            else if (!isEscaped && curr == Consts.ArgClose)
+                            {
+                                levels.Add(CreateLevel(currentLevel, new string[] { }, new string[] { }));
+                                state = State.Stop;
                             }
                             else
                             {
-                                state = State.PageNumStyle;
+                                currentLevel += curr;
                             }
-                        }
-                        else if (!isEscaped && curr == Consts.ArgClose)
-                        {
-                            levels.Add(CreateLevel(currentLevel, new string[] { }, new string[] { }));
-                            state = State.Stop;
-                        }
-                        else
-                        {
-                            currentLevel += curr;
                         }
                         break;
                     case State.See:
@@ -197,29 +203,32 @@ namespace Parser
                         currentLevel = string.Empty;
                         state = State.None;
                         break;
-                    case State.Seealso:
+                    case State.SeeAlso:
                         var seeAlso = ParseSee(stream);
                         levels.Add(CreateLevel(currentLevel, new string[] { }, seeAlso));
                         currentLevel = string.Empty;
                         state = State.None;
                         break;
                     case State.None:
-                        if (char.IsWhiteSpace(curr)) { }
-                        else if (curr == Consts.ArgOpen)
                         {
-                            state = State.Level;
-                        }
-                        else if (curr == Consts.ArgClose)
-                        {
-                            state = State.Stop;
-                        }
-                        else
-                        {
-                            throw new InvalidOperationException();
+                            var curr = stream.Get();
+                            if (char.IsWhiteSpace(curr)) { }
+                            else if (curr == Consts.ArgOpen)
+                            {
+                                state = State.Level;
+                            }
+                            else if (curr == Consts.ArgClose)
+                            {
+                                state = State.Stop;
+                            }
+                            else
+                            {
+                                throw new InvalidOperationException();
+                            }
                         }
                         break;
                     case State.PageNumStyle:
-                        if (curr == Consts.ArgClose)
+                        if (stream.Get() == Consts.ArgClose)
                         {
                             state = State.Stop;
                         }

@@ -10,6 +10,8 @@
         public const char Level = '!';
         public const char Visual = '@';
         public const char Subcommand = '|';
+        public const char PageRangeOpen = '(';
+        public const char PageRangeClose = ')';
         public const char IndexEscape = '"';
         public const char GeneralEscape = '\\';
         public const char ArgOpen = '{';
