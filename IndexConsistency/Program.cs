@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ParserLib;
 
 namespace IndexConsistency
 {
@@ -36,7 +37,7 @@ namespace IndexConsistency
             foreach (var file in Files)
             {
                 var text = File.ReadAllText(Path.Combine(BaseInputPath, file));
-                var localIndices = new Parser.Parser().CollectIndices(text);
+                var localIndices = new Parser().CollectIndices(text);
                 indices.UnionWith(localIndices);
             }
 
@@ -45,7 +46,7 @@ namespace IndexConsistency
             foreach (var file in Files)
             {
                 var text = File.ReadAllText(Path.Combine(BaseInputPath, file));
-                var modifiedText = new Parser.Parser().EnumerateIndices(text, enumeratedIndices);
+                var modifiedText = new Parser().EnumerateIndices(text, enumeratedIndices);
                 File.WriteAllText(Path.Combine(BaseOutputPath, file), modifiedText);
             }
         }

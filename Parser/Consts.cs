@@ -1,4 +1,4 @@
-﻿namespace Parser
+﻿namespace ParserLib
 {
     class Consts
     {

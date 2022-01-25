@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndexConsistency", "IndexCo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B64D1014-C109-43F6-937A-6AF65ED42042}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser", "Parser\Parser.csproj", "{0739E3D2-55F0-48C4-B4CD-337857EE28FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserLib", "Parser\ParserLib.csproj", "{0739E3D2-55F0-48C4-B4CD-337857EE28FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserTests", "Tests\Parser.Tests\ParserTests.csproj", "{41A7954D-09F4-4F97-AC9A-E02F169CD71A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserLibTests", "Tests\Parser.Tests\ParserLibTests.csproj", "{41A7954D-09F4-4F97-AC9A-E02F169CD71A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

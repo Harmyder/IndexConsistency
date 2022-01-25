@@ -1,4 +1,4 @@
-﻿namespace Parser
+﻿namespace ParserLib
 {
     internal class IndexLevel
     {

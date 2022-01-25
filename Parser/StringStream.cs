@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Parser
+namespace ParserLib
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class InputStringStream
