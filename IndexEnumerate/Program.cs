@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using ParserLib;
 
-namespace IndexConsistency
+namespace IndexEnumerate
 {
     class Program
     {
@@ -47,6 +47,7 @@ namespace IndexConsistency
             {
                 var text = File.ReadAllText(Path.Combine(BaseInputPath, file));
                 var modifiedText = new Parser().EnumerateIndices(text, enumeratedIndices);
+                modifiedText = modifiedText.Replace(Consts.FullIndexCommand, Consts.FullUkIndexCommand);
                 File.WriteAllText(Path.Combine(BaseOutputPath, file), modifiedText);
             }
         }

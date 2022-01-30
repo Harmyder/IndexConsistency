@@ -1,9 +1,11 @@
 ﻿namespace ParserLib
 {
-    class Consts
+    public class Consts
     {
         public const string IndexCommand = "index";
         public const string FullIndexCommand = "\\index";
+        public const string UkIndexCommand = "ukindex";
+        public const string FullUkIndexCommand = "\\ukindex";
         public const string SeeCommand = "see";
         public const string SeeAlsoCommand = "seealso";
 
